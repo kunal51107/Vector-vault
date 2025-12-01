@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from vector_vault.utils.math import normalize_vectors, cosine_similarity
+from vector_vault.utils.math import normalize_vectors, cosine_similarity , euclidean_distance
 
 def test_normalization():
     # A vector [3, 4] has length 5. Normalized, it should have length 1.
@@ -41,3 +41,38 @@ def test_matrix_search():
     # The first score should be highest (1.0)
     assert np.argmax(scores) == 0
     assert scores[0] > scores[1]
+
+def test_euclidean_batch_search():
+    # Database: 2 Vectors (2D)
+    # Vec A is at origin (0,0)
+    # Vec B is far away (3,4)
+    db = np.array([
+        [0.0, 0.0],
+        [3.0, 4.0]
+    ])
+    
+    # Query Batch: 2 Queries (2D)
+    # Q1 looks for Vec A
+    # Q2 looks for Vec B
+    queries = np.array([
+        [0.0, 0.0], 
+        [3.0, 4.0]
+    ])
+    
+    # The result should be a 2x2 Matrix
+    # [ Dist(Q1, A), Dist(Q1, B) ]
+    # [ Dist(Q2, A), Dist(Q2, B) ]
+    distances = euclidean_distance(db, queries)
+    
+    # Check Shape: (2 DB vectors, 2 Queries) -> (2, 2)
+    assert distances.shape == (2, 2)
+    
+    # Check Logic:
+    # Q1 (0,0) vs A (0,0) -> Distance 0
+    assert distances[0, 0] == 0.0
+    
+    # Q2 (3,4) vs B (3,4) -> Distance 0
+    assert distances[1, 1] == 0.0
+    
+    # Q1 (0,0) vs B (3,4) -> Distance 5 (3-4-5 triangle)
+    assert distances[0, 1] == 5.0
