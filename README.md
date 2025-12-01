@@ -2,7 +2,6 @@
 
 ![Status](https://img.shields.io/badge/Status-Work_in_Progress-orange)
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 ### A Vector Database Built from Scratch 
 
