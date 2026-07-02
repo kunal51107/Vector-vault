@@ -37,4 +37,3 @@ This project implements:
 
 ---
 
-*Created by Kunal*
